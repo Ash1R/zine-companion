@@ -1,0 +1,24 @@
+/* Example CSS styling */
+.vertical-timeline-element-content {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .vertical-timeline-element-date {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .vertical-timeline-element-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e91e63;
+    color: #fff;
+    font-size: 24px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+  }
+  
