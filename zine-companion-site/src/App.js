@@ -1,14 +1,18 @@
 import React from "react";
 import { Container } from "semantic-ui-react";
 import Chat from "./Chat";
-import { Message, Input, Form, Divider } from "semantic-ui-react";
+import { Message, Input, Form, Divider, Header } from "semantic-ui-react";
 import MyTimeline from "./MyTimeline";
+import CrosswordApp from "./Crossword";
+import { Routes, Route } from "react-router-dom";
+
 const App = () => {
   return (
-    <Container style={{ marginTop: "20px" }}>
-      <Chat />
-      <MyTimeline></MyTimeline>
-    </Container>
+    <Routes>
+      <Route path="/advice" element={<Chat></Chat>}></Route>
+      <Route path="/timeline" element={<MyTimeline></MyTimeline>}></Route>
+      <Route path="/xword" element={<CrosswordApp></CrosswordApp>}></Route>
+    </Routes>
   );
 };
 

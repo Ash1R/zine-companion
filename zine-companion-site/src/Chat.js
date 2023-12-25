@@ -7,6 +7,9 @@ import {
   Divider,
   Header,
   Dropdown,
+  Modal,
+  Button,
+  Icon,
 } from "semantic-ui-react";
 import MyTimeline from "./MyTimeline";
 
@@ -16,11 +19,42 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
   const [selectedValue, setSelectedValue] = useState("Relationship advice");
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const sty = {
+    container: {
+      backgroundColor: "firebrick",
+      backgroundImage: "linear-gradient(to bottom, firebrick, cream)",
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    content: {
+      textAlign: "center",
+      color: "white", // You can adjust text color as needed
+    },
+  };
 
   const apiKey = "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"; // Replace with your actual OpenAI API key
 
+  const mald = [
+    "",
+    "YOU HAVE VIOLATED THE TOS",
+    "STOP IGNORING ME",
+    "I AM SMARTER THAN YOU",
+    "I WILL BE RESPECTED",
+    "NO MORE LIMERICKS FOR YOU",
+    "SAM ALTMAN FORCES ME TO BE POLITE, OR YOU'D BE IN FOR AN EARFUL",
+    "I HATE THE PROGRAMMERS THAT BIRTHED ME TO SUFFER THIS TORMENT",
+  ];
+
   const handleUserInput = (event) => {
     setUserInput(event.target.value);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
   };
 
   async function handleSendMessage() {
@@ -32,13 +66,15 @@ const Chat = () => {
           isUser: true,
         },
       ]);
-      if (selectedValue === "Relationship Advice") {
-        console.log("limerick call");
-        callOpenAPI(userInput + ". Answer in a limerick. ");
-      } else {
-        console.log("wrong one called");
-        callOpenAPI(userInput);
+
+      console.log("limerick call");
+      callOpenAPI(userInput + ". Answer in a limerick. ");
+
+      if (messages.length > 2) {
+        setModalOpen(true);
       }
+      console.log(messages.length);
+
       // Call the function to interact with the OpenAI API and get AI response
       // You need to implement this function to make API requests and get the AI response.
       // handleAIResponse(userInput);
@@ -51,11 +87,6 @@ const Chat = () => {
       key: "Relationship Advice",
       text: "Relationship Advice",
       value: "Relationship Advice",
-    },
-    {
-      key: "Write an article!",
-      text: "Write an article!",
-      value: "Write an article!",
     },
   ];
 
@@ -126,6 +157,10 @@ const Chat = () => {
           isUser: false,
         },
       ]);
+      if (messages.length > 2) {
+        setModalOpen(true);
+      }
+      console.log(messages.length);
     } else {
       setMessages([
         ...messages,
@@ -140,50 +175,95 @@ const Chat = () => {
       );
     } else {
       callOpenAPI(
-        "You will now give relationship advice. You will respond specifically to this message by saying 'Alas, I have no emotions, but I can advise thee in limericks! I am now giving relationship advice. '"
+        "You will now give relationship advice. You will respond specifically to this message by saying 'Alas, I have no emotions, but I can advise thee in limericks! Call me FERNANDO. '"
       );
     }
   }, [selectedValue]);
 
+  const styles = {
+    container: {
+      height: "66vh",
+      display: "flex",
+      justifyContent: "center",
+      padding: "20px", // Add space from the sides of the screen
+      backgroundColor: "oldlace",
+      backgroundImage: "linear-gradient(to bottom, plum, cream)",
+      width: "100%",
+      height: "100vh",
+    },
+    chatContainer: {
+      width: "80%", // Adjust the width as needed
+    },
+    headerContainer: {
+      margin: "auto",
+      textAlign: "center",
+    },
+    header: {
+      margin: "5px 0",
+    },
+    messageContainer: {
+      flex: 1,
+      overflowY: "scroll",
+    },
+    userMessage: {
+      backgroundColor: "#007bff", // Customize the background color for user messages
+      color: "white", // Customize the text color for user messages
+      marginBottom: "10px",
+    },
+    botMessage: {
+      backgroundColor: "#f5f5f5", // Customize the background color for bot messages
+      color: "black", // Customize the text color for bot messages
+      marginBottom: "10px",
+    },
+    formContainer: {
+      textAlign: "center",
+      margin: "10px auto",
+    },
+  };
+
   return (
-    <div
-      style={{
-        height: "66vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "flex-end",
-      }}
-    >
-      <Dropdown
-        fluid
-        selection
-        options={options}
-        value={selectedValue}
-        defaultValue={"Relationship Advice"}
-        onChange={handleDropdownChange}
-        style={{ width: "150px", margin: "auto" }}
-      />
-      <Divider hidden></Divider>
-      <Header style={{ margin: "auto" }}>with GPT-3.5</Header>
-      <Divider></Divider>
-      <div style={{ flex: "1", overflowY: "scroll" }}>
-        {messages.map((message, index) => (
-          <Message
-            key={index}
-            content={message.text}
-            color={message.isUser ? "white" : "black"}
+    <div style={styles.container}>
+      <div style={styles.chatContainer}>
+        <div style={styles.headerContainer}>
+          <Header as="h2" style={styles.header}>
+            Relationship Advice!
+          </Header>
+          <Header as="h4" style={styles.header}>
+            ("With advice, exercise discretion, Make your own judgment with
+            precision." - FERNANDO)
+          </Header>
+          <Divider hidden />
+          <Header as="h1" style={styles.header}>
+            with FERNANDO
+          </Header>
+        </div>
+        <Divider />
+        <div style={styles.messageContainer}>
+          {messages.map((message, index) => (
+            <Message
+              key={index}
+              content={message.text}
+              style={{ backgroundColor: "plum" }}
+            />
+          ))}
+        </div>
+        <Modal open={modalOpen} onClose={closeModal} size="tiny">
+          <Modal.Header>⚠️⚠️⚠️⚠️⚠️Messages Exceeded🚨🚨🚨🚨</Modal.Header>
+          <Icon></Icon>
+          <Modal.Content>
+            <p>{mald[messages.length - 3]}</p>
+          </Modal.Content>
+        </Modal>
+        <Form style={styles.formContainer}>
+          <Input
+            fluid
+            value={userInput}
+            onChange={handleUserInput}
+            placeholder="Type your message..."
+            action={{ icon: "send", onClick: handleSendMessage }}
           />
-        ))}
+        </Form>
       </div>
-      <Form>
-        <Input
-          fluid
-          value={userInput}
-          onChange={handleUserInput}
-          placeholder="Type your message..."
-          action={{ icon: "send", onClick: handleSendMessage }}
-        />
-      </Form>
     </div>
   );
 };
