@@ -1,4 +1,4 @@
-A companion website for the AI&I magazine published 
+A companion website for the AI&I magazine made 
 by my group at S.H.T.E.M program, published by
 the Stanford Compression Forum
 
