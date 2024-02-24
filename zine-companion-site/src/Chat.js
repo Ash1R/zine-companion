@@ -36,7 +36,7 @@ const Chat = () => {
     },
   };
 
-  const apiKey = "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"; // Replace with your actual OpenAI API key
+  const apiKey = ""; // Replace with your actual OpenAI API key
 
   const mald = [
     "",
